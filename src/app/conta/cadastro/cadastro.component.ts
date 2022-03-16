@@ -16,11 +16,11 @@ import { FormBaseComponent } from 'src/app/base-components/form-base.component';
 })
 export class CadastroComponent extends FormBaseComponent implements OnInit, AfterViewInit {
 
-  @ViewChildren(FormControlName, { read: ElementRef }) formInputElements: ElementRef[];
+  @ViewChildren(FormControlName, { read: ElementRef }) formInputElements: ElementRef[] | undefined;
 
   errors: any[] = [];
-  cadastroForm: FormGroup;
-  usuario: Usuario;
+  cadastroForm: FormGroup | undefined;
+  usuario: Usuario | undefined;
 
   constructor(private fb: FormBuilder,
     private contaService: ContaService,
