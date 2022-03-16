@@ -4,7 +4,7 @@ import { Usuario } from '../models/usuario';
 
 import { Observable } from 'rxjs';
 import { catchError, map } from "rxjs/operators";
-import { BaseService } from 'src/app/services/base.service';
+import { BaseService } from '../../../app/services/base.service';
 
 @Injectable()
 export class ContaService extends BaseService {

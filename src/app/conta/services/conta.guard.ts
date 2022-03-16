@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanDeactivate, CanActivate, Router } from '@angular/router';
 import { CadastroComponent } from '../cadastro/cadastro.component';
-import { LocalStorageUtils } from 'src/app/utils/localstorage';
+import { LocalStorageUtils } from '../../../app/utils/localstorage';
 
 
 @Injectable()

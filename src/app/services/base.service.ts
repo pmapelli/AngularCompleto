@@ -1,6 +1,6 @@
 import { HttpHeaders, HttpErrorResponse } from "@angular/common/http";
 import { throwError } from "rxjs";
-import { environment } from 'src/environments/environment';
+import { environment } from '../../environments/environment';
 import { LocalStorageUtils } from '../utils/localstorage';
 
 export abstract class BaseService {
@@ -31,7 +31,8 @@ export abstract class BaseService {
 
     protected serviceError(response: Response | any) {
         let customError: string[] = [];
-        let customResponse = { error: { errors: [] }}
+        let customResponse = { error: { errors: [] as unknown as string[]}}
+        // [key: string]: { [key: string]: string } 
 
         if (response instanceof HttpErrorResponse) {
 
@@ -40,14 +41,14 @@ export abstract class BaseService {
                 response.error.errors = customError;
             }
         }
-        // if (response.status === 500) {
-        //     customError.push("Ocorreu um erro no processamento, tente novamente mais tarde ou contate o nosso suporte.");
+        if (response.status === 500) {
+            customError.push("Ocorreu um erro no processamento, tente novamente mais tarde ou contate o nosso suporte.");
             
-        //     // Erros do tipo 500 não possuem uma lista de erros
-        //     // A lista de erros do HttpErrorResponse é readonly                
-        //     customResponse.error.errors = customError;
-        //     return throwError(() => customResponse);
-        // }
+            // Erros do tipo 500 não possuem uma lista de erros
+            // A lista de erros do HttpErrorResponse é readonly                
+            customResponse.error.errors = customError;
+            return throwError(() => customResponse);
+        }
 
         console.error(response);
         return throwError(() => response);

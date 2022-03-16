@@ -1,14 +1,14 @@
+import { Router } from '@angular/router';
 import { Component, OnInit, AfterViewInit, ViewChildren, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl, FormControlName } from '@angular/forms';
-import { Router } from '@angular/router';
 
-import { CustomValidators } from 'ngx-custom-validators';
 import { ToastrService } from 'ngx-toastr';
+import { CustomValidators } from '@narik/custom-validators';
 
 import { Usuario } from '../models/usuario';
 import { ContaService } from '../services/conta.service';
 
-import { FormBaseComponent } from 'src/app/base-components/form-base.component';
+import { FormBaseComponent } from '../../../app/base-components/form-base.component';
 
 @Component({
   selector: 'app-cadastro',
@@ -16,11 +16,12 @@ import { FormBaseComponent } from 'src/app/base-components/form-base.component';
 })
 export class CadastroComponent extends FormBaseComponent implements OnInit, AfterViewInit {
 
-  @ViewChildren(FormControlName, { read: ElementRef }) formInputElements: ElementRef[] | undefined;
+  @ViewChildren(FormControlName, { read: ElementRef })
+  formInputElements: ElementRef[] = [];
 
   errors: any[] = [];
-  cadastroForm: FormGroup | undefined;
-  usuario: Usuario | undefined;
+  cadastroForm!: FormGroup;
+  usuario!: Usuario;
 
   constructor(private fb: FormBuilder,
     private contaService: ContaService,
@@ -50,13 +51,13 @@ export class CadastroComponent extends FormBaseComponent implements OnInit, Afte
 
   ngOnInit(): void {
 
-    let senha = new FormControl('', [Validators.required, CustomValidators.rangeLength([6, 15])]);
-    let senhaConfirm = new FormControl('', [Validators.required, CustomValidators.rangeLength([6, 15]), CustomValidators.equalTo(senha)]);
+    // let senha = new FormControl('', [Validators.required, CustomValidators.rangeLength([6, 15])]);
+    // let senhaConfirm = new FormControl('', [Validators.required, CustomValidators.rangeLength([6, 15]), CustomValidators.equalTo(senha)]);
 
     this.cadastroForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: senha,
-      confirmPassword: senhaConfirm
+      password: ['', [Validators.required, CustomValidators.rangeLength([6, 15])]],
+      confirmPassword: ['', [Validators.required, CustomValidators.rangeLength([6, 15])]]
     });
   }
 
@@ -67,22 +68,20 @@ export class CadastroComponent extends FormBaseComponent implements OnInit, Afte
   }
 
   adicionarConta() {
-    if (this.usuario && this.cadastroForm && this.cadastroForm.dirty && this.cadastroForm.valid) {
+    if (this.cadastroForm.dirty && this.cadastroForm.valid) {
       this.usuario = Object.assign({}, this.usuario, this.cadastroForm.value);
 
       this.contaService.registrarUsuario(this.usuario)
-        .subscribe(
-          sucesso => { this.processarSucesso(sucesso) },
-          falha => { this.processarFalha(falha) }
-        );
+        .subscribe({
+          next: (s) =>  this.processarSucesso(s),
+          error: (f) => this.processarFalha(f) 
+        });
 
       this.mudancasNaoSalvas = false;
     }
   }
 
-  processarSucesso(response: any) {
-    if (!this.cadastroForm) return;
-    
+  processarSucesso(response: any) {    
     this.cadastroForm.reset();
     this.errors = [];
 

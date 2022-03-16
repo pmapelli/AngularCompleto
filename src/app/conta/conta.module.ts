@@ -5,7 +5,6 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CustomFormsModule } from 'ngx-custom-validators'
 
 import { LoginComponent } from './login/login.component';
 import { CadastroComponent } from './cadastro/cadastro.component';
@@ -25,7 +24,6 @@ import { ContaService } from './services/conta.service';
     ContaRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
-    CustomFormsModule,
   ],
   providers: [
     ContaService,

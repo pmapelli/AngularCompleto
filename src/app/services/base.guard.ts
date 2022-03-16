@@ -1,5 +1,5 @@
 import { Router, ActivatedRouteSnapshot } from '@angular/router';
-import { LocalStorageUtils } from 'src/app/utils/localstorage';
+import { LocalStorageUtils } from '../../app/utils/localstorage';
 
 export abstract class BaseGuard {
 
