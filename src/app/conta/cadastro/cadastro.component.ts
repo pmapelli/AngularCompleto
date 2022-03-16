@@ -61,11 +61,13 @@ export class CadastroComponent extends FormBaseComponent implements OnInit, Afte
   }
 
   ngAfterViewInit(): void {
-    super.configurarValidacaoFormularioBase(this.formInputElements, this.cadastroForm);
+    if (this.formInputElements && this.cadastroForm){
+      super.configurarValidacaoFormularioBase(this.formInputElements, this.cadastroForm);
+    }  
   }
 
   adicionarConta() {
-    if (this.cadastroForm.dirty && this.cadastroForm.valid) {
+    if (this.usuario && this.cadastroForm && this.cadastroForm.dirty && this.cadastroForm.valid) {
       this.usuario = Object.assign({}, this.usuario, this.cadastroForm.value);
 
       this.contaService.registrarUsuario(this.usuario)
@@ -79,6 +81,8 @@ export class CadastroComponent extends FormBaseComponent implements OnInit, Afte
   }
 
   processarSucesso(response: any) {
+    if (!this.cadastroForm) return;
+    
     this.cadastroForm.reset();
     this.errors = [];
 

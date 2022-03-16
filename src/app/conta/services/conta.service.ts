@@ -11,7 +11,7 @@ export class ContaService extends BaseService {
 
     constructor(private http: HttpClient) { super(); }
 
-    registrarUsuario(usuario: Usuario): Observable<Usuario> {
+    registrarUsuario(usuario: Usuario | undefined): Observable<Usuario> {
         let response = this.http
             .post(this.UrlServiceV1 + 'nova-conta', usuario, this.ObterHeaderJson())
             .pipe(
